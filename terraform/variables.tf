@@ -30,6 +30,6 @@ variable "admin_username" {
 
 variable "ssh_public_key_path" {
   type        = string
-  default     = "C:\\Users\\javil\\.ssh\\id_rsa2.pub"
+  default     = "C:\\Users\\javil\\.ssh\\id_rsa.pub"
   description = "Public ssh key adress."
 }
