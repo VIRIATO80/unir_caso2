@@ -36,4 +36,5 @@ output "aks_cluster_name" {
 
 output "aks_cluster_kube_config" {
   value = data.azurerm_kubernetes_cluster.aks.kube_config_raw
+  sensitive = true
 }

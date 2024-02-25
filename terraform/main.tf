@@ -136,8 +136,9 @@ resource "azurerm_linux_virtual_machine" "linuxmachine" {
   location            = azurerm_resource_group.lindo.location
   size                = var.linux_vm_size
   admin_username      = var.admin_username
-  disable_password_authentication = true
+  disable_password_authentication = false
   network_interface_ids = [azurerm_network_interface.network.id]
+  admin_password      = var.admin_password
 
   admin_ssh_key {
     username   = var.admin_username
