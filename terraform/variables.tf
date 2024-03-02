@@ -28,12 +28,6 @@ variable "admin_username" {
   description = "Name for admin user."
 }
 
-variable "admin_password" {
-  description = "Admin password"
-  type        = string
-  sensitive   = true
-}
-
 variable "ssh_public_key_path" {
   type        = string
   default     = "C:\\Users\\javil\\.ssh\\id_rsa.pub"

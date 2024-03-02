@@ -1,3 +1,5 @@
 .vscode
 **/.terraform/*
+**/.ssh/*
 terraform/terraform.tfstate
+ansible/hosts.ini

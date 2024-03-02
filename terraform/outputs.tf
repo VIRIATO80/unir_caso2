@@ -11,7 +11,7 @@ output "acr_repository_url" {
 }
 
 output "network_interface_name" {
-  value = azurerm_network_interface.network.name
+  value = azurerm_network_interface.network-nic.name
 }
 
 output "virtual_network_name" {
@@ -32,5 +32,10 @@ output "aks_cluster_name" {
 
 output "aks_cluster_kube_config" {
   value = data.azurerm_kubernetes_cluster.aks.kube_config_raw
+  sensitive = true
+}
+
+output "ssh_private_key" {
+  value = tls_private_key.ssh_key.private_key_pem
   sensitive = true
 }
