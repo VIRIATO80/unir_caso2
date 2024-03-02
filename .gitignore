@@ -3,3 +3,4 @@
 **/.ssh/*
 terraform/terraform.tfstate
 ansible/hosts.ini
+ansible/passwords.yml

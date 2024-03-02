@@ -1,0 +1,36 @@
+- name: Levantar contenedor Podman con Apache
+  hosts: azure_servers
+  become: true
+  vars_files:
+    - variables.yml
+    - passwords.yml
+  tasks:
+    - name: Descargar imagen desde DockerHub
+      containers.podman.podman_image:
+        name: docker.io/library/httpd
+    - name: Taggear la imagen
+      shell: podman tag httpd {{ acr_login_server }}/public/httpd:{{ docker_image_tag }}
+
+    - name: Iniciar sesión en ACR
+      containers.podman.podman_login:
+        username: "{{ registry_name }}"
+        password: "{{ acr_pass }}"
+        registry: "{{ acr_login_server }}"
+
+    - name: Push a ACR
+      containers.podman.podman_image:
+        push: true
+        name: "{{ acr_login_server }}/public/httpd:{{ docker_image_tag }}"
+
+    - name: Descargar imagen Apache desde ACR
+      containers.podman.podman_image:
+        pull: true
+        name: "{{ acr_login_server }}/public/httpd"
+        tag: "{{ docker_image_tag }}"
+    - name: Crear contenedor
+      containers.podman.podman_container:
+        name: apache-container
+        image: "{{ acr_login_server }}/public/httpd:{{ docker_image_tag }}"
+        state: started
+        ports:
+          - "80:80"
