@@ -12,11 +12,11 @@ resource "azurerm_linux_virtual_machine" "linuxmachine" {
   admin_username      = var.admin_username
   disable_password_authentication = true
   network_interface_ids = [ azurerm_network_interface.network-nic.id ]
-  # admin_password      = var.admin_password
+  admin_password      = var.admin_password
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = tls_private_key.ssh_key.public_key_openssh
+    public_key = file(var.ssh_public_key_path)
   }
 
   os_disk {

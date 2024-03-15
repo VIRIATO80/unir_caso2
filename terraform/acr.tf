@@ -6,4 +6,5 @@ resource "azurerm_container_registry" "lindoacr" {
   sku                      = "Standard"
   admin_enabled            = true
   public_network_access_enabled = true
+  anonymous_pull_enabled = true
 }

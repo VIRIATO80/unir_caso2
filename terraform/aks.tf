@@ -19,6 +19,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   network_profile {
     network_plugin = "azure"
   }
+
 }
 
 
