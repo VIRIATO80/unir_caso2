@@ -1,0 +1,24 @@
+- name: Descargar Jenkins y subirlo a ACR
+  hosts: azure_servers
+  become: true
+  vars_files:
+    - variables.yml
+    - passwords.yml
+  tasks:
+    - name: Descargar imagen de Jenkins desde Docker Hub
+      containers.podman.podman_image:
+        name: "docker.io/jenkins/jenkins"
+
+    - name: Taggear la imagen
+      shell: podman tag jenkins {{ acr_login_server }}/k8s-images/jenkins:{{ docker_image_tag }}
+
+    - name: Iniciar sesión en ACR
+      containers.podman.podman_login:
+        username: "{{ registry_name }}"
+        password: "{{ acr_pass }}"
+        registry: "{{ acr_login_server }}"
+
+    - name: Push a ACR
+      containers.podman.podman_image:
+        push: true
+        name: "{{ acr_login_server }}/k8s-images/jenkins:{{ docker_image_tag }}"

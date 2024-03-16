@@ -1,0 +1,48 @@
+- name: Crear Pod para Jenkins
+  k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        namespace: default
+        name: jenkins
+        labels:
+          app: jenkins
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: jenkins
+        template:
+          metadata:
+            labels:
+              app: jenkins
+          spec:
+            containers:
+              - name: jenkins
+                image: "{{ acr_login_server }}/k8s-images/jenkins:{{ docker_image_tag }}"
+                ports:
+                  - name: http-port
+                    containerPort: 8080
+                  - name: jnlp-port
+                    containerPort: 50000
+                securityContext:
+                  allowPrivilegeEscalation: true
+                  privileged: true
+                  readOnlyRootFilesystem: false
+                  runAsUser: 0
+                volumeMounts:
+                  - name: jenkins-data
+                    mountPath: /var/jenkins_home
+                env:
+                  - name: JENKINS_ADMIN_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: secret-pass
+                        key: JENKINS_ADMIN_PASSWORD
+            volumes:
+              - name: jenkins-data
+                persistentVolumeClaim:
+                  claimName: jenkins-pvc

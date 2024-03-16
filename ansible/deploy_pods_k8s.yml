@@ -1,0 +1,19 @@
+---
+- name: Deploy Pods to AKS Cluster
+  hosts: localhost
+  gather_facts: true
+  vars_files:
+    - variables.yml
+    - passwords.yml
+  tasks:
+    - name: Crear secretos en AKS
+      include_tasks: tasks/create_secrets.yml
+
+    - name: Crear volumen para Jenkins
+      include_tasks: tasks/create_persistent_volume_jenkins.yml
+
+    - name: Crear servicio para Jenkins
+      include_tasks: tasks/create_service_jenkins.yml
+
+    - name: Deploy Jenkins
+      include_tasks: tasks/deploy_jenkins.yml
